@@ -3,7 +3,7 @@
 Combinator::Combinator() : Mechanic("Combinator") {
 }
 
-void Combinator::tick() {
+void Combinator::tick(float dt) {
 
 }
 

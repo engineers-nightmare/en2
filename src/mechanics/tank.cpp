@@ -3,7 +3,7 @@
 Tank::Tank() : Mechanic("Tank") {
 }
 
-void Tank::tick() {
+void Tank::tick(float dt) {
 
 }
 

@@ -12,6 +12,7 @@ set (EN2_SOURCES
     
 set (EN2_MECHANICS_SOURCES
     src/mechanics/mechanic.h
+    src/mechanics/mechanics.h
     src/mechanics/tank.h
     src/mechanics/tank.cpp
     src/mechanics/pump.h

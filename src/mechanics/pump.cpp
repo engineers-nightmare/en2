@@ -3,7 +3,7 @@
 Pump::Pump() : Mechanic("Pump") {
 }
 
-void Pump::tick() {
+void Pump::tick(float dt) {
 
 }
 

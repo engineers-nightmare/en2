@@ -3,7 +3,7 @@
 Torch::Torch() : Mechanic("Torch") {
 }
 
-void Torch::tick() {
+void Torch::tick(float dt) {
 
 }
 

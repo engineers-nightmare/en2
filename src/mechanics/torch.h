@@ -5,6 +5,6 @@
 class Torch : public Mechanic {
 public:
     Torch();
-    virtual void tick() override;
+    virtual void tick(float dt) override;
     virtual std::string dump() const override;
 };

@@ -1,12 +1,12 @@
 #include "torch.h"
 
-Torch::Torch() : Mechanic("Torch") {
+Torch::Torch(std::string const& name /* = "Torch" */) : Mechanic(name) {
 }
 
-void Torch::tick(float dt) {
+void Torch::tick() {
 
 }
 
 std::string Torch::dump() const {
-    return name + "\n";
+    return name;
 }

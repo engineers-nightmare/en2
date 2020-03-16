@@ -4,7 +4,7 @@
 
 class Combinator : public Mechanic {
 public:
-    Combinator();
-    virtual void tick(float dt) override;
+    Combinator(std::string const& name = "Combinator");
+    virtual void tick() override;
     virtual std::string dump() const override;
 };

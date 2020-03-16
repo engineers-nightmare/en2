@@ -1,12 +1,12 @@
 #include "combinator.h"
 
-Combinator::Combinator() : Mechanic("Combinator") {
+Combinator::Combinator(std::string const& name /* = "Combinator" */) : Mechanic(name) {
 }
 
-void Combinator::tick(float dt) {
+void Combinator::tick() {
 
 }
 
 std::string Combinator::dump() const {
-    return name + "\n";
+    return name;
 }

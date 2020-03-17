@@ -1,6 +1,10 @@
 #include "tank.h"
 
-Tank::Tank(std::string const &name /* = "Tank" */) : Mechanic(name) {
+Tank::Tank(std::string const &name) : Mechanic(name) {
+}
+
+Tank::ptr Tank::create(std::string const& name /*= "Tank"*/) {
+    return std::make_shared<Tank>(name);
 }
 
 void Tank::tick() {
@@ -35,6 +39,10 @@ void Tank::setCapacity(int64_t c) {
 }
 
 int64_t Tank::deposit(int64_t d) {
+    if (quantity >= capacity) {
+        return d;
+    }
+
     auto over = (quantity + d) - capacity;
 
     if (over >= 0) {

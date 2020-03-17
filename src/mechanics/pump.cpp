@@ -1,7 +1,11 @@
 #include "pump.h"
 
-Pump::Pump(std::string const& name /*= "Pump"*/)
+Pump::Pump(std::string const& name)
 : Mechanic(name), source(nullptr), dest(nullptr), flow(0.0f), holding(0.0f) {
+}
+
+Pump::ptr Pump::create(std::string const& name /*= "Pump"*/) {
+    return std::make_shared<Pump>(name);
 }
 
 void Pump::tick() {
@@ -26,6 +30,10 @@ void Pump::setFlow(int64_t f) {
 }
 
 void Pump::take() {
+    if (!source) {
+        return;
+    }
+
     auto over = flow - holding;
     if (over > 0) {
         holding += source->withdraw(over);
@@ -33,5 +41,9 @@ void Pump::take() {
 }
 
 void Pump::put() {
+    if (!dest) {
+        return;
+    }
+
     holding = dest->deposit(holding);    
 }

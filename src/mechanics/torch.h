@@ -5,6 +5,7 @@
 class Torch : public Mechanic {
 public:
     using ptr = std::shared_ptr<Torch>;
+    static ptr create(std::string const& name = "Torch");
 
 public:
     Torch(std::string const& name = "Torch");

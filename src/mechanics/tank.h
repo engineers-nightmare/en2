@@ -5,13 +5,14 @@
 class Tank : public Mechanic {
 public:
     using ptr = std::shared_ptr<Tank>;
+    static ptr create(std::string const& name = "Tank");
 
 protected:
     int64_t capacity;
     int64_t quantity;
 
 public:
-    Tank(std::string const& name = "Tank");
+    Tank(std::string const& name);
     virtual void tick() override;
     virtual std::string dump() const override;
 

@@ -8,6 +8,7 @@
 class Mechanic {
 public:
     using ptr = std::shared_ptr<Mechanic>;
+    static ptr create(std::string const& name = "Mechanic");
 
 protected:
     std::string name;

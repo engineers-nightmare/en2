@@ -18,6 +18,7 @@
 class Pump : public Mechanic {
 public:
     using ptr = std::shared_ptr<Pump>;
+    static ptr create(std::string const& name = "Pump");
 
 protected:
     Tank::ptr source;
@@ -26,7 +27,7 @@ protected:
     int64_t holding;
 
 public:
-    Pump(std::string const& name = "Pump");
+    Pump(std::string const& name);
     virtual void tick() override;
     virtual std::string dump() const override;
 

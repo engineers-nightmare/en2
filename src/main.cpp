@@ -22,6 +22,7 @@ public:
         for (auto && mech : mechanics) {
            std::cout << mech->dump() << "\n";
         }
+        std::cout << "\n";
     }
 };
 

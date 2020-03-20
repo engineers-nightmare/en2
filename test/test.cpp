@@ -3,6 +3,7 @@
 
 #include <fluid.h>
 #include <mechanics/tank.h>
+#include <mechanics/pump.h>
 
 TEST_CASE("Fluid movement") {
     FluidVolume vol;
@@ -21,11 +22,11 @@ TEST_CASE("Fluid movement") {
         REQUIRE(v.second == 5);
     }
 
+    auto tank = Tank::create("tank1", 123456789);
+    auto tank2 = Tank::create("tank1", 123456789);
+    tank->deposit(vol);
     SECTION("Tank") {
-        auto tank = Tank::create("tank1", 123456789);
         REQUIRE(tank->getCapacity() == 123456789);
-        tank->deposit(vol);
         REQUIRE(tank->getQuantity() == 10);
     }
 }
-

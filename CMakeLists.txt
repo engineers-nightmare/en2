@@ -16,8 +16,9 @@ if (${FORCE_COLORED_OUTPUT})
 endif ()
 
 set (EN2_SOURCES
-    src/main.cpp
     src/misc.h
+    src/fluid.cpp
+    src/fluid.h
 )
     
 set (EN2_MECHANICS_SOURCES
@@ -36,7 +37,12 @@ set (EN2_MECHANICS_SOURCES
 include(FindPkgConfig)
 PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
 
-add_executable(en2 ${EN2_SOURCES} ${EN2_MECHANICS_SOURCES})
+add_executable(en2 src/main.cpp ${EN2_SOURCES} ${EN2_MECHANICS_SOURCES})
 target_compile_features(en2 PRIVATE cxx_std_17)
 target_include_directories(en2 PRIVATE ${SDL2_INCLUDE_DIRS})
 target_link_libraries(en2 ${SDL2_LIBRARIES})
+
+add_executable(test_en2 test/test.cpp ${EN2_SOURCES} ${EN2_MECHANICS_SOURCES})
+target_compile_features(test_en2 PRIVATE cxx_std_17)
+target_include_directories(test_en2 PRIVATE ${SDL2_INCLUDE_DIRS})
+target_include_directories(test_en2 PRIVATE include src)

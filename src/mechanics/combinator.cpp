@@ -59,8 +59,8 @@ void Combinator::tick() {
         auto & tank = tanks[i];
         auto r = mixRatios[i];
         auto p = r * candidate;
-        tank->withdraw(p);
-        tankProduct->deposit(p);
+        auto v = tank->withdraw(p);
+        tankProduct->deposit(v);
     }
 
     for (auto & tank : tanks) {
@@ -85,7 +85,7 @@ void Combinator::setTanks(uint num) {
     mixes = std::vector<uint>(num, 0);
     mixRatios = std::vector<float>(num, 0);
     for (auto i = 0; i < num; ++i) {
-        tanks[i] = std::make_shared<Tank>(name + "_tank" + std::to_string(i));
+        tanks[i] = Tank::create(name + "_tank" + std::to_string(i));
     }
 }
 

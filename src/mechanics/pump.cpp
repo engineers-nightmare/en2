@@ -1,7 +1,7 @@
 #include "pump.h"
 
 Pump::Pump(std::string const& name)
-: Mechanic(name), source(nullptr), dest(nullptr), flow(0.0f), holding(0.0f) {
+: Mechanic(name), source(nullptr), dest(nullptr), flow(0.0f), holding() {
 }
 
 Pump::ptr Pump::create(std::string const& name /*= "Pump"*/) {
@@ -14,7 +14,7 @@ void Pump::tick() {
 }
 
 std::string Pump::dump() const {
-    return name + "  " + std::to_string(holding);
+    return name + "  " + holding.dump();
 }
 
 void Pump::setSource(Tank::ptr const& s) {
@@ -34,9 +34,9 @@ void Pump::take() {
         return;
     }
 
-    auto over = flow - holding;
+    auto over = flow - holding.getTotalVolume();
     if (over > 0) {
-        holding += source->withdraw(over);
+        holding.add(source->withdraw(over));
     }
 }
 

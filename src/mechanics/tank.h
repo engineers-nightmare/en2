@@ -1,18 +1,21 @@
 #pragma once
 
+#include <unordered_map>
+
 #include "mechanic.h"
+#include "../fluid.h"
 
 class Tank : public Mechanic {
 public:
     using ptr = std::shared_ptr<Tank>;
-    static ptr create(std::string const& name = "Tank");
+    static ptr create(std::string const& name, int64_t cap = 0);
 
 protected:
     int64_t capacity;
-    int64_t quantity;
+    FluidVolume volume;
 
 public:
-    Tank(std::string const& name);
+    Tank(std::string const& name, int64_t cap);
     virtual void tick() override;
     virtual std::string dump() const override;
 
@@ -20,10 +23,10 @@ public:
     int64_t getCapacity() const;
 
     /** returns remainder if tried to deposit past capacity */
-    int64_t deposit(int64_t d);
+    FluidVolume deposit(FluidVolume dep);
 
     /** returns amount withdrawn. Might be different from requested */
-    int64_t withdraw(int64_t w);
+    FluidVolume withdraw(int64_t w);
 
     void setCapacity(int64_t c);
 };

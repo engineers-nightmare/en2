@@ -68,32 +68,35 @@ public:
             c1->setMix(1, 30);
             c1->setMix(2, 60);
             auto t = c1->getTank(0);
-            t->setCapacity(10);
+            t->setCapacity(100);
             t = c1->getTank(1);
-            t->setCapacity(10);
+            t->setCapacity(100);
             t = c1->getTank(2);
-            t->setCapacity(10);
+            t->setCapacity(100);
             t = c1->getP();
-            t->setCapacity(10000);
+            t->setCapacity(100000);
             t = c1->getBP();
-            t->setCapacity(1000);
+            t->setCapacity(10000);
         }
 
         //configure tanks
         {
-            t1->setCapacity(10000);
-            t2->setCapacity(10000);
-            t3->setCapacity(10000);
-            t1->deposit(t1->getCapacity());
-            t2->deposit(t2->getCapacity());
-            t3->deposit(t3->getCapacity());
+            t1->setCapacity(100000);
+            t2->setCapacity(100000);
+            t3->setCapacity(100000);
+            auto f1 = FluidVolume("Fluid 1", t1->getCapacity());
+            auto f2 = FluidVolume("Fluid 2", t2->getCapacity());
+            auto f3 = FluidVolume("Fluid 3", t3->getCapacity());
+            t1->deposit(f1);
+            t2->deposit(f2);
+            t3->deposit(f3);
         }
 
         // configure pumps
         {
-            p1->setFlow(8750);
-            p2->setFlow(4000);
-            p3->setFlow(6000);
+            p1->setFlow(87500);
+            p2->setFlow(40000);
+            p3->setFlow(60000);
 
             p1->setSource(t1);
             p1->setDest(c1->getTank(0));

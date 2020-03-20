@@ -1,8 +1,8 @@
 #pragma once
 
+#include "../fluid.h"
 #include "mechanic.h"
 #include "tank.h"
-
 
 /**
  *  A pump's flow rate is also its internal capacity
@@ -24,7 +24,7 @@ protected:
     Tank::ptr source;
     Tank::ptr dest;
     int64_t flow;
-    int64_t holding;
+    FluidVolume holding;
 
 public:
     Pump(std::string const& name);

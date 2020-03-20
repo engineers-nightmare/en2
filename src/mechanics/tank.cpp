@@ -1,18 +1,19 @@
 #include "tank.h"
 
-Tank::Tank(std::string const &name) : Mechanic(name) {
+Tank::Tank(std::string const &name, int64_t cap) : Mechanic(name), capacity(cap) {
 }
 
-Tank::ptr Tank::create(std::string const& name /*= "Tank"*/) {
-    return std::make_shared<Tank>(name);
+Tank::ptr Tank::create(std::string const& name, int64_t cap /*= 0*/) {
+    return std::make_shared<Tank>(name, cap);
 }
 
 void Tank::tick() {
 }
 
 std::string Tank::dump() const {
+    auto q = getQuantity();
     std::string d = name + " |";
-    auto pct = (float)quantity / (float)capacity;
+    auto pct = (float)q / (float)capacity;
     const auto width = 10;
     for (auto i = 0; i < width; ++i) {
         if (i == (int64_t)(width * pct)) {
@@ -22,12 +23,16 @@ std::string Tank::dump() const {
             d += " ";
         }
     }
-    d += "|  " + std::to_string(quantity) + "/" + std::to_string(capacity);
+    d += "|  " + std::to_string(q) + "/" + std::to_string(capacity) + " ";
+    for (auto & fluid : volume.getVolume()) {
+        d += "(" + fluid.first + ": " + std::to_string(fluid.second) + ") ";
+    }
+    
     return d;
 }
 
 int64_t Tank::getQuantity() const {
-    return quantity;
+    return volume.getTotalVolume();
 }
 
 int64_t Tank::getCapacity() const {
@@ -38,25 +43,23 @@ void Tank::setCapacity(int64_t c) {
     capacity = c;
 }
 
-int64_t Tank::deposit(int64_t d) {
-    if (quantity >= capacity) {
-        return d;
+FluidVolume Tank::deposit(FluidVolume dep) {
+    if (getQuantity() >= capacity) {
+        return dep;
     }
 
-    auto over = (quantity + d) - capacity;
+    auto over = (getQuantity() + dep.getTotalVolume()) - capacity;
 
     if (over >= 0) {
-        quantity = capacity;
-        return over;
+        volume.add(dep.subtract(dep.getTotalVolume() - over));
+        return dep;
     }
     else {
-        quantity += d;
-        return 0;
+        volume.add(dep);
+        return FluidVolume();
     }
 }
 
-int64_t Tank::withdraw(int64_t w) {
-    auto amt = std::min(w, quantity);
-    quantity -= amt;
-    return amt;
+FluidVolume Tank::withdraw(int64_t w) {
+    return volume.subtract(w);
 }

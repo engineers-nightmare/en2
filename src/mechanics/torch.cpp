@@ -8,7 +8,9 @@ Torch::ptr Torch::create(std::string const& name /*= "Torch"*/) {
 }
 
 void Torch::tick() {
-
+    if (state != State::Enabled) {
+        return;
+    }
 }
 
 void Torch::dump(std::stringstream & stream) const {

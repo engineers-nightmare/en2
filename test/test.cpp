@@ -24,6 +24,8 @@ TEST_CASE("Fluid movement") {
 
     auto tank = Tank::create("tank1", 123456789);
     auto tank2 = Tank::create("tank1", 123456789);
+    tank->setState(Mechanic::State::Enabled);
+    tank2->setState(Mechanic::State::Enabled);
     tank->deposit(vol);
     SECTION("Tank") {
         REQUIRE(tank->getCapacity() == 123456789);
@@ -31,6 +33,7 @@ TEST_CASE("Fluid movement") {
     }
 
     auto pump = Pump::create("pump1");
+    pump->setState(Mechanic::State::Enabled);
     pump->setFlow(2000);
     tank->deposit(FluidVolume("water", 200000));
     pump->setSource(tank);

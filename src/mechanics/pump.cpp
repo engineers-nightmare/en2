@@ -9,6 +9,10 @@ Pump::ptr Pump::create(std::string const& name /*= "Pump"*/) {
 }
 
 void Pump::tick() {
+    if (state != State::Enabled) {
+        return;
+    }
+
     take();
     put();
 }

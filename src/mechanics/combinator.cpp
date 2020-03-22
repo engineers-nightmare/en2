@@ -14,6 +14,10 @@ Combinator::ptr Combinator::create(std::string const& name /*= "Combinator"*/) {
 }
 
 void Combinator::tick() {
+    if (state != State::Enabled) {
+        return;
+    }
+
     std::vector<float> candidates(tanks.size());
 
     for (size_t i = 0; i < tanks.size(); ++i) {

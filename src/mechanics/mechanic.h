@@ -11,11 +11,19 @@ public:
     using ptr = std::shared_ptr<Mechanic>;
     static ptr create(std::string const& name = "Mechanic");
 
+    enum class State {
+        Disabled,
+        Enabled,
+    };
+
 protected:
     std::string name;
+    State state;
 
 public:
-    Mechanic(std::string const& name) : name(name) {}
+    Mechanic(std::string const& name) : name(name), state(State::Enabled) {}
+
+    void setState(State state) { this->state = state; }
 
     virtual void tick() = 0;
 

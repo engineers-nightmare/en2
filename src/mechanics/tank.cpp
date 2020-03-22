@@ -8,6 +8,9 @@ Tank::ptr Tank::create(std::string const& name, int64_t cap /*= 0*/) {
 }
 
 void Tank::tick() {
+    if (state != State::Enabled) {
+        return;
+    }
 }
 
 void Tank::dump(std::stringstream & stream) const {

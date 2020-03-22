@@ -26,7 +26,7 @@ void Pump::setDest(Tank::ptr const& d) {
 }
 
 void Pump::setFlow(int64_t f) {
-    flow = f * misc::MechanicsTickRate;
+    flow = f / (1.0f / misc::MechanicsTickRate);
 }
 
 void Pump::take() {

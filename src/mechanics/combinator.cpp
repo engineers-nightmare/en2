@@ -117,5 +117,5 @@ void Combinator::setMix(size_t tank, uint amount) {
 }
 
 void Combinator::setMixRate(int64_t m) {
-    mixRate = m * misc::MechanicsTickRate;
+    mixRate = m / (1.0f / misc::MechanicsTickRate);
 }

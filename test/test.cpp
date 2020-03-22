@@ -29,4 +29,15 @@ TEST_CASE("Fluid movement") {
         REQUIRE(tank->getCapacity() == 123456789);
         REQUIRE(tank->getQuantity() == 10);
     }
+
+    auto pump = Pump::create("pump1");
+    pump->setFlow(2000);
+    tank->deposit(FluidVolume("water", 200000));
+    pump->setSource(tank);
+    pump->setDest(tank2);
+    for (auto i = 0; i < 1.0f / misc::MechanicsTickRate; ++i) {
+        pump->tick();
+    }
+    REQUIRE(tank2->getQuantity() >= 2000 * .95f);
+    REQUIRE(tank2->getQuantity() <= 2000 * 1.05f);
 }

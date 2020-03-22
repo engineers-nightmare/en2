@@ -63,7 +63,7 @@ public:
         // configure combinator
         {
             c1->setTanks(3);
-            c1->setMixRate(1000);
+            c1->setMixRate(10000);
             c1->setMix(0, 10);
             c1->setMix(1, 30);
             c1->setMix(2, 60);
@@ -74,7 +74,7 @@ public:
             t = c1->getTank(2);
             t->setCapacity(10000);
             t = c1->getP();
-            t->setCapacity(100000);
+            t->setCapacity(500000);
         }
 
         //configure tanks

@@ -12,7 +12,6 @@ public:
 
 protected:
     Tank::ptr tankProduct;
-    Tank::ptr tankByProduct;
     std::vector<Tank::ptr> tanks;
     std::vector<uint> mixes;
     std::vector<float> mixRatios;
@@ -29,10 +28,8 @@ public:
 
     /** get product tank */
     Tank::ptr const& getP() const;
-    /** get by-product tank */
-    Tank::ptr const& getBP() const;
 
-    /** get tank (neither byproduct nor product) at index */
+    /** get tank (_not_ product) at index */
     Tank::ptr const& getTank(size_t index) const;
 
     /**

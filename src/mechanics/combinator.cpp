@@ -5,7 +5,8 @@
 #include "combinator.h"
 
 Combinator::Combinator(std::string const& name)
-: Mechanic(name), tankProduct(Tank::create("Product")), tankByProduct(Tank::create("ByProduct")), tanks(), mixes(), mixRatios(), mixRate(0) {
+: Mechanic(name), tankProduct(Tank::create("Product")),
+  tanks(), mixes(), mixRatios(), mixRate(0) {
 }
 
 Combinator::ptr Combinator::create(std::string const& name /*= "Combinator"*/) {
@@ -53,7 +54,8 @@ void Combinator::tick() {
         return;
     }
 
-    auto candidate = std::min(candidates[candidateIndex.value()], (float)(tankProduct->getCapacity() - tankProduct->getQuantity()));
+    int64_t candidate = std::min(candidates[candidateIndex.value()], (float)(tankProduct->getCapacity() - tankProduct->getQuantity()));
+    candidate = std::min(candidate, mixRate);
 
     for (size_t i = 0; i < candidates.size(); ++i) {
         auto & tank = tanks[i];
@@ -67,7 +69,6 @@ void Combinator::tick() {
         tank->tick();
     }
     tankProduct->tick();
-    tankByProduct->tick();
 }
 
 std::string Combinator::dump() const {
@@ -75,8 +76,7 @@ std::string Combinator::dump() const {
     for (auto & tank : tanks) {
         d += tank->dump() + "\n|";
     }
-    d += tankProduct->dump() + "\n\\";
-    d += tankByProduct->dump();
+    d += tankProduct->dump();
     return d;
 }
 
@@ -91,10 +91,6 @@ void Combinator::setTanks(uint num) {
 
 Tank::ptr const& Combinator::getP() const {
     return tankProduct;
-}
-
-Tank::ptr const& Combinator::getBP() const {
-    return tankByProduct;
 }
 
 Tank::ptr const& Combinator::getTank(size_t index) const {

@@ -18,6 +18,10 @@ std::unordered_map<FluidType, float> FluidVolume::getRatios() const {
     std::unordered_map<FluidType, float> ratios;
     auto tv = getTotalVolume();
     for (auto const& f: volume) {
+        if (tv == 0) {
+            ratios[f.first] = 0;
+            continue;
+        }
         ratios[f.first] = (float)f.second / (float)tv;
     }
     return ratios;

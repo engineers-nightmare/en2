@@ -71,13 +71,13 @@ void Combinator::tick() {
     tankProduct->tick();
 }
 
-std::string Combinator::dump() const {
-    std::string d = name + "\n/";
+void Combinator::dump(std::stringstream & stream) const {
+    stream << name << "\n/";
     for (auto & tank : tanks) {
-        d += tank->dump() + "\n|";
+        tank->dump(stream);
+        stream << "\n|";
     }
-    d += tankProduct->dump();
-    return d;
+    tankProduct->dump(stream);
 }
 
 void Combinator::setTanks(uint num) {

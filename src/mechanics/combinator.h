@@ -22,7 +22,7 @@ protected:
 public:
     Combinator(std::string const& name);
     virtual void tick() override;
-    virtual std::string dump() const override;
+    virtual void dump(std::stringstream & stream) const override;
 
     void setTanks(uint num);
 

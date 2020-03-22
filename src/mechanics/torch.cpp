@@ -11,6 +11,6 @@ void Torch::tick() {
 
 }
 
-std::string Torch::dump() const {
-    return name;
+void Torch::dump(std::stringstream & stream) const {
+    stream << name;
 }

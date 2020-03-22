@@ -17,7 +17,7 @@ protected:
 public:
     Tank(std::string const& name, int64_t cap);
     virtual void tick() override;
-    virtual std::string dump() const override;
+    virtual void dump(std::stringstream & stream) const override;
 
     int64_t getQuantity() const;
     int64_t getCapacity() const;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <sstream>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -24,7 +25,7 @@ public:
     FluidVolume();
     FluidVolume(FluidType type, int64_t amount);
 
-    std::string dump() const;
+    void dump(std::stringstream & stream) const;
 
     int64_t getTotalVolume() const;
     Volume const& getVolume() const;

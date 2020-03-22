@@ -10,25 +10,23 @@ Tank::ptr Tank::create(std::string const& name, int64_t cap /*= 0*/) {
 void Tank::tick() {
 }
 
-std::string Tank::dump() const {
+void Tank::dump(std::stringstream & stream) const {
     auto q = getQuantity();
-    std::string d = name + " |";
+    stream << name << " |";
     auto pct = (float)q / (float)capacity;
     const auto width = 10;
     for (auto i = 0; i < width; ++i) {
         if (i == (int64_t)(width * pct)) {
-            d += "^";
+            stream << "^";
         }
         else {
-            d += " ";
+            stream << " ";
         }
     }
-    d += "|  " + std::to_string(q) + "/" + std::to_string(capacity) + " ";
+    stream << "|  " << q << "/" << capacity << " ";
     for (auto & fluid : volume.getVolume()) {
-        d += "(" + fluid.first + ": " + std::to_string(fluid.second) + ") ";
+        stream << "(" << fluid.first << ": " << fluid.second << ") ";
     }
-    
-    return d;
 }
 
 int64_t Tank::getQuantity() const {

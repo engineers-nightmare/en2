@@ -1,7 +1,8 @@
 #include <algorithm>
 #include <iostream>
-#include <vector>
 #include <memory>
+#include <sstream>
+#include <vector>
 
 #include <SDL2/SDL.h>
 
@@ -18,19 +19,23 @@ public:
         }
     }
 
-    void dumpMechanics() {
+    void dumpMechanics(std::stringstream & stream) const {
         for (auto && mech : mechanics) {
-           std::cout << mech->dump() << "\n";
+           mech->dump(stream);
+           stream << "\n";
         }
-        std::cout << "\n";
+        stream << "\n";
     }
 };
 
 class Game {
+private:
+    std::stringstream dumpStream;
+
 public:
     Systems systems;
 
-    Game() : systems() {
+    Game() : systems(), dumpStream() {
         // auto tank1 = systems.mechanics.emplace_back(Tank::create("tank1"));
         // auto tank2 = systems.mechanics.emplace_back(Tank::create("tank2"));
         // auto tank3 = systems.mechanics.emplace_back(Tank::create("tank3"));
@@ -143,7 +148,10 @@ public:
                 // tick mechanics at fixed mechTick rate
                 systems.tickMechanics();
                 mechAccum -= misc::MechanicsTickRate;
-                systems.dumpMechanics();
+                systems.dumpMechanics(dumpStream);
+                std::cout << dumpStream.str();
+                dumpStream.str("");
+                dumpStream.clear();
             }
 
             // output state of mechanics

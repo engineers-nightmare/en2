@@ -6,12 +6,10 @@ FluidVolume::FluidVolume(FluidType type, int64_t amount) {
     add(type, amount);
 }
 
-std::string FluidVolume::dump() const {
-    std::string r;
+void FluidVolume::dump(std::stringstream & stream) const {
     for (auto const& f: volume) {
-        r += f.first + "(" + std::to_string(f.second) + ") ";
+        stream << f.first << "(" << f.second << ") ";
     }
-    return r;
 }
 
 std::unordered_map<FluidType, float> FluidVolume::getRatios() const {

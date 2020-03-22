@@ -2,6 +2,7 @@
 
 #include <string>
 #include <memory>
+#include <sstream>
 
 #include "../misc.h"
 
@@ -19,6 +20,6 @@ public:
     virtual void tick() = 0;
 
     // return a string of things done since last tick
-    virtual std::string dump() const = 0;
+    virtual void dump(std::stringstream & stream) const = 0;
 };
 

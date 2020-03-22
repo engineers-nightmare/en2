@@ -29,7 +29,7 @@ protected:
 public:
     Pump(std::string const& name);
     virtual void tick() override;
-    virtual std::string dump() const override;
+    virtual void dump(std::stringstream & stream) const override;
 
     void setSource(Tank::ptr const& s);
     void setDest(Tank::ptr const& d);

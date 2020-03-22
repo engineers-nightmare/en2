@@ -13,8 +13,9 @@ void Pump::tick() {
     put();
 }
 
-std::string Pump::dump() const {
-    return name + "  " + holding.dump();
+void Pump::dump(std::stringstream & stream) const {
+    stream << name << "  ";
+    holding.dump(stream);
 }
 
 void Pump::setSource(Tank::ptr const& s) {

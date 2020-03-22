@@ -10,5 +10,5 @@ public:
 public:
     Torch(std::string const& name = "Torch");
     virtual void tick() override;
-    virtual std::string dump() const override;
+    virtual void dump(std::stringstream & stream) const override;
 };

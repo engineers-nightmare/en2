@@ -55,7 +55,9 @@ public:
         auto p1 = Pump::create("pump1");
         auto p2 = Pump::create("pump2");
         auto p3 = Pump::create("pump3");
+        auto p4 = Pump::create("pump4");
         auto c1 = Combinator::create("comb1");
+        auto to = Torch::create("torch");
 
         systems.mechanics.push_back(t1);
         systems.mechanics.push_back(t2);
@@ -63,43 +65,56 @@ public:
         systems.mechanics.push_back(p1);
         systems.mechanics.push_back(p2);
         systems.mechanics.push_back(p3);
+        systems.mechanics.push_back(p4);
         systems.mechanics.push_back(c1);
+        systems.mechanics.push_back(to);
 
         // configure combinator
         {
             c1->setTanks(3);
-            c1->setMixRate(10000);
+            c1->setMixRate(10000000);
             c1->setMix(0, 10);
             c1->setMix(1, 30);
             c1->setMix(2, 60);
             auto t = c1->getTank(0);
-            t->setCapacity(1000);
+            t->setCapacity(1000000);
             t = c1->getTank(1);
-            t->setCapacity(1000);
+            t->setCapacity(1000000);
             t = c1->getTank(2);
-            t->setCapacity(10000);
-            t = c1->getP();
-            t->setCapacity(500000);
+            t->setCapacity(10000000);
+            t = c1->getProductTank();
+            t->setCapacity(500000000);
         }
 
         //configure tanks
         {
-            t1->setCapacity(100000);
-            t2->setCapacity(100000);
-            t3->setCapacity(100000);
+            t1->setCapacity(100000000);
+            t2->setCapacity(100000000);
+            t3->setCapacity(100000000);
             auto f1 = FluidVolume("Fluid 1", t1->getCapacity());
             auto f2 = FluidVolume("Fluid 2", t2->getCapacity());
             auto f3 = FluidVolume("Fluid 3", t3->getCapacity());
             t1->deposit(f1);
             t2->deposit(f2);
             t3->deposit(f3);
+            to->getFeedTank()->setCapacity(10000000);
+        }
+
+        // configure torch
+        {
+            to->setTolerance(5, 10);
+            to->setBurnRate(1680000);
+            to->setCombustible("Fluid 1", 10);
+            to->setCombustible("Fluid 2", 30);
+            to->setCombustible("Fluid 3", 60);
         }
 
         // configure pumps
         {
-            p1->setFlow(87500);
-            p2->setFlow(40000);
-            p3->setFlow(60000);
+            p1->setFlow(87500000);
+            p2->setFlow(40000000);
+            p3->setFlow(60000000);
+            p4->setFlow(200000000);
 
             p1->setSource(t1);
             p1->setDest(c1->getTank(0));
@@ -107,6 +122,8 @@ public:
             p2->setDest(c1->getTank(1));
             p3->setSource(t3);
             p3->setDest(c1->getTank(2));
+            p4->setSource(c1->getProductTank());
+            p4->setDest(to->getFeedTank());
         }
 
     }

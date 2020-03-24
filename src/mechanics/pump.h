@@ -34,7 +34,7 @@ public:
     void setSource(Tank::ptr const& s);
     void setDest(Tank::ptr const& d);
 
-    /** set flow rate in ml/s */
+    /** set flow rate in μl/s */
     void setFlow(int64_t f);
     void take();
     void put();

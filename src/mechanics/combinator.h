@@ -16,7 +16,7 @@ protected:
     std::vector<uint> mixes;
     std::vector<float> mixRatios;
 
-    int64_t mixRate;
+    FluidAmount mixRate;
     float sumMixes;
 
 public:
@@ -27,7 +27,7 @@ public:
     void setTanks(uint num);
 
     /** get product tank */
-    Tank::ptr const& getP() const;
+    Tank::ptr const& getProductTank() const;
 
     /** get tank (_not_ product) at index */
     Tank::ptr const& getTank(size_t index) const;
@@ -40,6 +40,6 @@ public:
      */
     void setMix(size_t tank, uint mix);
 
-    /** set flow rate in ml/s */
-    void setMixRate(int64_t m);
+    /** set flow rate in μl/s */
+    void setMixRate(FluidAmount m);
 };

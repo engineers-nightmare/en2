@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <assert.h>
 #include <optional>
 
@@ -28,7 +29,7 @@ void Combinator::tick() {
         candidates[i] = req;
     }
 
-    std::vector<int64_t> tables(tanks.size());
+    std::vector<FluidAmount> tables(tanks.size());
     for (size_t c = 0; c < candidates.size(); ++c) {
         auto candidate = candidates[c];
         for (size_t i = 0; i < tanks.size(); ++i) {
@@ -58,8 +59,8 @@ void Combinator::tick() {
         return;
     }
 
-    int64_t candidate = std::min(candidates[candidateIndex.value()], (float)(tankProduct->getCapacity() - tankProduct->getQuantity()));
-    candidate = std::min(candidate, mixRate);
+    FluidAmount candidate = std::min((float)(tankProduct->getCapacity() - tankProduct->getQuantity()), candidates[candidateIndex.value()]);
+    candidate = std::min(mixRate, candidate);
 
     for (size_t i = 0; i < candidates.size(); ++i) {
         auto & tank = tanks[i];
@@ -93,7 +94,7 @@ void Combinator::setTanks(uint num) {
     }
 }
 
-Tank::ptr const& Combinator::getP() const {
+Tank::ptr const& Combinator::getProductTank() const {
     return tankProduct;
 }
 
@@ -103,7 +104,7 @@ Tank::ptr const& Combinator::getTank(size_t index) const {
 
 void Combinator::setMix(size_t tank, uint amount) {
     assert(tank < tanks.size());
-    assert(amount >= 0 && amount < 100);
+    amount = std::clamp(amount, 0u, 100u);
     mixes[tank] = amount;
 
     sumMixes = 0;
@@ -116,6 +117,6 @@ void Combinator::setMix(size_t tank, uint amount) {
     }
 }
 
-void Combinator::setMixRate(int64_t m) {
+void Combinator::setMixRate(FluidAmount m) {
     mixRate = m / (1.0f / misc::MechanicsTickRate);
 }

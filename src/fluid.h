@@ -31,7 +31,7 @@ public:
     Volume const& getVolume() const;
 
     void add(FluidType type, int64_t amount);
-    void add(FluidVolume const& vol);
+    void add(FluidVolume vol);
 
     /**
      * returns proportional mix of all fluids in this volume

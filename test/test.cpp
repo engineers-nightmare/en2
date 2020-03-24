@@ -44,3 +44,10 @@ TEST_CASE("Fluid movement") {
     REQUIRE(tank2->getQuantity() >= 2000 * .95f);
     REQUIRE(tank2->getQuantity() <= 2000 * 1.05f);
 }
+
+TEST_CASE("Fluid Amount") {
+    FluidAmount fa(55);
+    SECTION("Add") {
+        REQUIRE(fa + 55 == 110);
+    }
+}

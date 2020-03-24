@@ -42,7 +42,7 @@ void FluidVolume::add(FluidType type, int64_t amount) {
     volume[type] += amount;
 }
 
-void FluidVolume::add(FluidVolume const& vol) {
+void FluidVolume::add(FluidVolume vol) {
     for (auto && fv : vol.volume) {
         volume[fv.first] += fv.second;
     }

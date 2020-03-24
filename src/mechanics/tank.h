@@ -22,6 +22,9 @@ public:
     int64_t getQuantity() const;
     int64_t getCapacity() const;
 
+    /** get snapshot view of tank contents */
+    FluidVolume const& inspect() const;
+
     /** returns remainder if tried to deposit past capacity */
     FluidVolume deposit(FluidVolume dep);
 

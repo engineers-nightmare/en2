@@ -44,6 +44,10 @@ void Tank::setCapacity(int64_t c) {
     capacity = c;
 }
 
+FluidVolume const& Tank::inspect() const {
+    return volume;
+}
+
 FluidVolume Tank::deposit(FluidVolume dep) {
     if (getQuantity() >= capacity) {
         return dep;

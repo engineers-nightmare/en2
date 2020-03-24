@@ -38,9 +38,11 @@ include(FindPkgConfig)
 PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
 
 add_executable(en2 src/main.cpp ${EN2_SOURCES} ${EN2_MECHANICS_SOURCES})
+target_compile_definitions(en2 PUBLIC -DBUILD_TESTS=OFF)
 target_compile_features(en2 PRIVATE cxx_std_17)
 target_include_directories(en2 PRIVATE ${SDL2_INCLUDE_DIRS})
 target_link_libraries(en2 ${SDL2_LIBRARIES})
+target_include_directories(en2 PRIVATE include)
 
 add_executable(test_en2 test/test.cpp ${EN2_SOURCES} ${EN2_MECHANICS_SOURCES})
 target_compile_features(test_en2 PRIVATE cxx_std_17)

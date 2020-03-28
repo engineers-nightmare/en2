@@ -75,7 +75,7 @@ public:
         {
             c1->setState(Mechanic::State::Enabled);
             c1->setTanks(3);
-            c1->setMixRate(10.17_LpS);
+            c1->setMixRate(1.168_LpS * 0.75);
             c1->setMix(0, 10);
             c1->setMix(1, 30);
             c1->setMix(2, 60);
@@ -106,7 +106,7 @@ public:
         // configure torch
         {
             to->setTolerance(5, 10);
-            to->setBurnRate(10.168_LpS);
+            to->setBurnRate(1.168_LpS);
             to->setCombustible("Fluid 1", 10);
             to->setCombustible("Fluid 2", 30);
             to->setCombustible("Fluid 3", 60);
@@ -114,9 +114,9 @@ public:
 
         // configure pumps
         {
-            p1->setFlow(10.875_LpS);
-            p2->setFlow(10.500_LpS);
-            p3->setFlow(20.900_LpS);
+            p1->setFlow(1.875_LpS);
+            p2->setFlow(1.500_LpS);
+            p3->setFlow(2.900_LpS);
             p4->setFlow(11_LpS);
 
             p1->setSource(t1);

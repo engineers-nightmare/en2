@@ -18,7 +18,7 @@ void Pump::tick() {
 }
 
 void Pump::dump(std::stringstream & stream) const {
-    stream << name << "  ";
+    stream << name << " (" << flow.to<double>() << "L) ";
     holding.dump(stream);
 }
 
@@ -30,8 +30,8 @@ void Pump::setDest(Tank::ptr const& d) {
     dest = d;
 }
 
-void Pump::setFlow(int64_t f) {
-    flow = f / (1.0f / misc::MechanicsTickRate);
+void Pump::setFlow(LitersPerSecond f) {
+    flow = f;
 }
 
 void Pump::take() {
@@ -39,8 +39,11 @@ void Pump::take() {
         return;
     }
 
-    auto over = flow - holding.getTotalVolume();
-    if (over > 0) {
+    Liters f = flow * misc::MechanicsTickRate;
+    auto td = misc::MechanicsTickRate.to<double>();
+    auto fd = flow.to<double>();
+    auto over = f - holding.getTotalVolume();
+    if (over > 0_L) {
         holding.add(source->withdraw(over));
     }
 }

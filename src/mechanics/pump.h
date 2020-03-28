@@ -23,7 +23,7 @@ public:
 protected:
     Tank::ptr source;
     Tank::ptr dest;
-    int64_t flow;
+    LitersPerSecond flow;
     FluidVolume holding;
 
 public:
@@ -34,8 +34,7 @@ public:
     void setSource(Tank::ptr const& s);
     void setDest(Tank::ptr const& d);
 
-    /** set flow rate in μl/s */
-    void setFlow(int64_t f);
+    void setFlow(LitersPerSecond f);
     void take();
     void put();
 };

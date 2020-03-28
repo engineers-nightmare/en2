@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <iomanip>
 #include <iostream>
 #include <memory>
 #include <sstream>
@@ -6,6 +7,7 @@
 
 #include <SDL2/SDL.h>
 
+#include "fluid.h"
 #include "misc.h"
 #include "mechanics/mechanics.h"
 
@@ -71,39 +73,40 @@ public:
 
         // configure combinator
         {
+            c1->setState(Mechanic::State::Enabled);
             c1->setTanks(3);
-            c1->setMixRate(10000000);
+            c1->setMixRate(10.17_LpS);
             c1->setMix(0, 10);
             c1->setMix(1, 30);
             c1->setMix(2, 60);
             auto t = c1->getTank(0);
-            t->setCapacity(1000000);
+            t->setCapacity(10000_L);
             t = c1->getTank(1);
-            t->setCapacity(1000000);
+            t->setCapacity(10000_L);
             t = c1->getTank(2);
-            t->setCapacity(10000000);
+            t->setCapacity(10000_L);
             t = c1->getProductTank();
-            t->setCapacity(500000000);
+            t->setCapacity(50000_L);
         }
 
         //configure tanks
         {
-            t1->setCapacity(100000000);
-            t2->setCapacity(100000000);
-            t3->setCapacity(100000000);
+            t1->setCapacity(100_L);
+            t2->setCapacity(100_L);
+            t3->setCapacity(100_L);
             auto f1 = FluidVolume("Fluid 1", t1->getCapacity());
             auto f2 = FluidVolume("Fluid 2", t2->getCapacity());
             auto f3 = FluidVolume("Fluid 3", t3->getCapacity());
             t1->deposit(f1);
             t2->deposit(f2);
             t3->deposit(f3);
-            to->getFeedTank()->setCapacity(10000000);
+            to->getFeedTank()->setCapacity(1_L);
         }
 
         // configure torch
         {
             to->setTolerance(5, 10);
-            to->setBurnRate(1680000);
+            to->setBurnRate(10.168_LpS);
             to->setCombustible("Fluid 1", 10);
             to->setCombustible("Fluid 2", 30);
             to->setCombustible("Fluid 3", 60);
@@ -111,10 +114,10 @@ public:
 
         // configure pumps
         {
-            p1->setFlow(87500000);
-            p2->setFlow(40000000);
-            p3->setFlow(60000000);
-            p4->setFlow(200000000);
+            p1->setFlow(10.875_LpS);
+            p2->setFlow(10.500_LpS);
+            p3->setFlow(20.900_LpS);
+            p4->setFlow(11_LpS);
 
             p1->setSource(t1);
             p1->setDest(c1->getTank(0));
@@ -125,7 +128,7 @@ public:
             p4->setSource(c1->getProductTank());
             p4->setDest(to->getFeedTank());
         }
-
+        dumpStream << std::setiosflags(std::ios::fixed) << std::setprecision(5);
     }
 
     bool init() {
@@ -161,10 +164,11 @@ public:
 
             mechAccum += frameTime;
 
-            while (mechAccum >= misc::MechanicsTickRate) {
+            constexpr auto mechTick = misc::MechanicsTickRate.to<float>();
+            while (mechAccum >= mechTick) {
                 // tick mechanics at fixed mechTick rate
                 systems.tickMechanics();
-                mechAccum -= misc::MechanicsTickRate;
+                mechAccum -= mechTick;
                 systems.dumpMechanics(dumpStream);
                 std::cout << dumpStream.str();
                 dumpStream.str("");

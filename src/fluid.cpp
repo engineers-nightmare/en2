@@ -1,32 +1,42 @@
 #include "fluid.h"
 
+
+LitersPerSecond operator""_LpS(long double lps) {
+    return LitersPerSecond(lps);
+}
+
+LitersPerSecond operator""_LpS(unsigned long long int lps) {
+    return LitersPerSecond(lps);
+}
+
+
 FluidVolume::FluidVolume() : volume() {}
 
-FluidVolume::FluidVolume(FluidType type, int64_t amount) {
+FluidVolume::FluidVolume(FluidType type, Liters amount) {
     add(type, amount);
 }
 
 void FluidVolume::dump(std::stringstream & stream) const {
     for (auto const& f: volume) {
-        stream << f.first << "(" << f.second << ") ";
+        stream << f.first << "(" << f.second.to<double>() << "L) ";
     }
 }
 
-std::unordered_map<FluidType, float> FluidVolume::getRatios() const {
-    std::unordered_map<FluidType, float> ratios;
+std::unordered_map<FluidType, double> FluidVolume::getRatios() const {
+    std::unordered_map<FluidType, double> ratios;
     auto tv = getTotalVolume();
     for (auto const& f: volume) {
-        if (tv == 0) {
+        if (tv == Liters(0.0)) {
             ratios[f.first] = 0;
             continue;
         }
-        ratios[f.first] = (float)f.second / (float)tv;
+        ratios[f.first] = f.second.to<double>() / tv.to<double>();
     }
     return ratios;
 }
 
-int64_t FluidVolume::getTotalVolume() const {
-    int64_t v = 0;
+Liters FluidVolume::getTotalVolume() const {
+    Liters v(0);
     for (auto const& f: volume) {
         v += f.second;
     }
@@ -38,7 +48,7 @@ FluidVolume::Volume const& FluidVolume::getVolume() const {
     return volume;
 }
 
-void FluidVolume::add(FluidType type, int64_t amount) {
+void FluidVolume::add(FluidType type, Liters amount) {
     volume[type] += amount;
 }
 
@@ -48,7 +58,7 @@ void FluidVolume::add(FluidVolume vol) {
     }
 }
 
-FluidVolume FluidVolume::subtract(int64_t amount) {
+FluidVolume FluidVolume::subtract(Liters amount) {
     auto t = getTotalVolume();
     amount = std::min(t, amount);
     auto ratios = getRatios();

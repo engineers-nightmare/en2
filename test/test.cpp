@@ -7,47 +7,48 @@
 
 TEST_CASE("Fluid movement") {
     FluidVolume vol;
-    vol.add("Fluid 1", 10);
-    REQUIRE(vol.getTotalVolume() == 10);
+    vol.add("Fluid 1", 10_L);
+    REQUIRE(vol.getTotalVolume() == 10_L);
 
-    vol.add("Fluid 2", 10);
-    REQUIRE(vol.getTotalVolume() == 20);
+    vol.add("Fluid 2", 10_L);
+    REQUIRE(vol.getTotalVolume() == 20_L);
     
-    auto s = vol.subtract(10);
-    REQUIRE(s.getTotalVolume() == 10);
-    REQUIRE(vol.getTotalVolume() == 10);
+    auto s = vol.subtract(10_L);
+    REQUIRE(s.getTotalVolume() == 10_L);
+    REQUIRE(vol.getTotalVolume() == 10_L);
 
     auto sv = s.getVolume();
     for (auto v : sv) {
-        REQUIRE(v.second == 5);
+        REQUIRE(v.second == 5_L);
     }
 
-    auto tank = Tank::create("tank1", 123456789);
-    auto tank2 = Tank::create("tank1", 123456789);
+    auto tank = Tank::create("tank1", 99999999_L);
+    auto tank2 = Tank::create("tank1", 99999999_L);
     tank->setState(Mechanic::State::Enabled);
     tank2->setState(Mechanic::State::Enabled);
-    tank->deposit(vol);
     SECTION("Tank") {
-        REQUIRE(tank->getCapacity() == 123456789);
-        REQUIRE(tank->getQuantity() == 10);
+        tank->deposit(vol);
+        REQUIRE(tank->getCapacity() == 99999999_L);
+        REQUIRE(tank->getQuantity() == 10_L);
     }
 
     auto pump = Pump::create("pump1");
     pump->setState(Mechanic::State::Enabled);
-    pump->setFlow(2000);
-    tank->deposit(FluidVolume("water", 200000));
+    pump->setFlow(2000_LpS);
+    tank->deposit(FluidVolume("water", 200000_L));
     pump->setSource(tank);
     pump->setDest(tank2);
-    for (auto i = 0; i < 1.0f / misc::MechanicsTickRate; ++i) {
+    auto steps = 1.0 / misc::MechanicsTickRate.to<double>();
+    for (auto i = 0; i < steps; ++i) {
         pump->tick();
     }
-    REQUIRE(tank2->getQuantity() >= 2000 * .95f);
-    REQUIRE(tank2->getQuantity() <= 2000 * 1.05f);
+    REQUIRE(tank2->getQuantity() >= 2000_L * .99);
+    REQUIRE(tank2->getQuantity() <= 2000_L * 1.01);
 }
 
 TEST_CASE("Fluid Amount") {
-    FluidAmount fa(55);
+    Liters fa(55_L);
     SECTION("Add") {
-        REQUIRE(fa + 55 == 110);
+        REQUIRE(fa + 55_L == 110_L);
     }
 }

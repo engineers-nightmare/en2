@@ -19,7 +19,7 @@ public:
 protected:
     Tank::ptr tankFeed;
 
-    FluidAmount burnRate;
+    LitersPerSecond burnRate;
     std::unordered_map<FluidType, uint> combustibles;
     float nearTolerance;
     float farTolerance;
@@ -32,8 +32,7 @@ public:
     virtual void tick() override;
     virtual void dump(std::stringstream & stream) const override;
 
-    /** in μl/s */
-    void setBurnRate(FluidAmount burn);
+    void setBurnRate(LitersPerSecond b);
 
     /**
      * set tolerances to burn rate discrepancies

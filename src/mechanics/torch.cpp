@@ -18,8 +18,10 @@ void Torch::tick() {
         return;
     }
 
-    holding.add(tankFeed->withdraw(burnRate));
-    if (holding.getTotalVolume() < burnRate) {
+    Liters br = burnRate * misc::MechanicsTickRate;
+
+    holding.add(tankFeed->withdraw(br));
+    if (holding.getTotalVolume() < br) {
         torchState = TorchState::Inactive;
         return;
     }
@@ -83,28 +85,28 @@ void Torch::tick() {
             torchState = TorchState::Optimal;
         }
     }
-    holding.subtract(burnRate);
+    holding.subtract(br);
 }
 
 void Torch::dump(std::stringstream & stream) const {
     std::string stateOut = "";
     switch (torchState) {
         case TorchState::Inactive:
-            stateOut = "|< -----";
+            stateOut = "|       |";
             break;
         case TorchState::Suboptimal:
-            stateOut = "|< =====";
+            stateOut = "| > > > |";
             break;
         case TorchState::Optimal:
-            stateOut = "|< <<<<<";
+            stateOut = "| >>>>> |";
             break;
     }
-    stream << name << " " << stateOut << "\n\\";
+    stream << name << " " << stateOut << "  " << burnRate.to<double>() << "L\n\\";
     tankFeed->dump(stream);
 }
 
-void Torch::setBurnRate(FluidAmount burn) {
-    burnRate = burn / (1.0f / misc::MechanicsTickRate);
+void Torch::setBurnRate(LitersPerSecond b) {
+    burnRate = b;
 }
 
 void Torch::setTolerance(float near, float far) {

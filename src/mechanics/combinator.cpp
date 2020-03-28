@@ -19,7 +19,7 @@ void Combinator::tick() {
         return;
     }
 
-    std::vector<float> candidates(tanks.size());
+    std::vector<Liters> candidates(tanks.size());
 
     for (size_t i = 0; i < tanks.size(); ++i) {
         auto mix = mixes[i];
@@ -29,7 +29,7 @@ void Combinator::tick() {
         candidates[i] = req;
     }
 
-    std::vector<FluidAmount> tables(tanks.size());
+    std::vector<units::volume::liter> tables(tanks.size());
     for (size_t c = 0; c < candidates.size(); ++c) {
         auto candidate = candidates[c];
         for (size_t i = 0; i < tanks.size(); ++i) {
@@ -37,7 +37,7 @@ void Combinator::tick() {
             auto ratio = mixRatios[i];
             auto m = ratio * candidate;
             if (m > tank->getQuantity()) {
-                candidates[c] = 0;
+                candidates[c] = 0_L;
                 break;
             }
         }
@@ -45,7 +45,7 @@ void Combinator::tick() {
 
     std::optional<size_t> candidateIndex = std::nullopt;
     for (size_t c = 0; c < candidates.size(); ++c) {
-        if (candidates[c] != 0) {
+        if (candidates[c] != 0_L) {
             if (candidateIndex.has_value()) {
                 candidateIndex = candidates[c] > candidates[candidateIndex.value()] ? c : candidateIndex.value();
             }
@@ -59,8 +59,9 @@ void Combinator::tick() {
         return;
     }
 
-    FluidAmount candidate = std::min((float)(tankProduct->getCapacity() - tankProduct->getQuantity()), candidates[candidateIndex.value()]);
-    candidate = std::min(mixRate, candidate);
+    Liters candidate = std::min(tankProduct->getCapacity() - tankProduct->getQuantity(), candidates[candidateIndex.value()]);
+    Liters mr = mixRate * misc::MechanicsTickRate;
+    candidate = std::min(mr, candidate);
 
     for (size_t i = 0; i < candidates.size(); ++i) {
         auto & tank = tanks[i];
@@ -77,7 +78,11 @@ void Combinator::tick() {
 }
 
 void Combinator::dump(std::stringstream & stream) const {
-    stream << name << "\n/";
+    stream << name << " ratios: ";
+    for (auto const &m : mixRatios) {
+        stream << m << ":";
+    }
+    stream << "\n";
     for (auto & tank : tanks) {
         tank->dump(stream);
         stream << "\n|";
@@ -88,7 +93,7 @@ void Combinator::dump(std::stringstream & stream) const {
 void Combinator::setTanks(uint num) {
     tanks  = std::vector<Tank::ptr>(num, nullptr);
     mixes = std::vector<uint>(num, 0);
-    mixRatios = std::vector<float>(num, 0);
+    mixRatios = std::vector<double>(num, 0);
     for (auto i = 0; i < num; ++i) {
         tanks[i] = Tank::create(name + "_tank" + std::to_string(i));
     }
@@ -117,6 +122,6 @@ void Combinator::setMix(size_t tank, uint amount) {
     }
 }
 
-void Combinator::setMixRate(FluidAmount m) {
-    mixRate = m / (1.0f / misc::MechanicsTickRate);
+void Combinator::setMixRate(LitersPerSecond m) {
+    mixRate = m;
 }

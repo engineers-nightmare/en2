@@ -5,13 +5,20 @@
 #include <utility>
 #include <vector>
 
+#include "misc.h"
+
 typedef std::string FluidType;
 
-typedef int64_t FluidAmount;
+typedef units::volume::liter_t Liters;
+using LitersPerSecond = decltype(1_L / 1_s);
+
+LitersPerSecond operator""_LpS(long double lpt);
+
+LitersPerSecond operator""_LpS(unsigned long long int lpt);
 
 class FluidVolume {
 public:
-    typedef std::unordered_map<FluidType, FluidAmount> Volume;
+    typedef std::unordered_map<FluidType, Liters> Volume;
 
     Volume volume;
 
@@ -19,18 +26,18 @@ public:
      * return vector of fluid type and ratio of
      * that fluid in this volume
      */
-    std::unordered_map<FluidType, float> getRatios() const;
+    std::unordered_map<FluidType, double> getRatios() const;
 
 public:
     FluidVolume();
-    FluidVolume(FluidType type, int64_t amount);
+    FluidVolume(FluidType type, Liters amount);
 
     void dump(std::stringstream & stream) const;
 
-    int64_t getTotalVolume() const;
+    Liters getTotalVolume() const;
     Volume const& getVolume() const;
 
-    void add(FluidType type, int64_t amount);
+    void add(FluidType type, Liters amount);
     void add(FluidVolume vol);
 
     /**
@@ -39,5 +46,5 @@ public:
      * Will be less than if there isn't enough in this volume
      * to satisfy the request
      */
-    FluidVolume subtract(int64_t amount);
+    FluidVolume subtract(Liters amount);
 };

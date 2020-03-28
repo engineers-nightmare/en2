@@ -1,9 +1,9 @@
 #include "tank.h"
 
-Tank::Tank(std::string const &name, int64_t cap) : Mechanic(name), capacity(cap) {
+Tank::Tank(std::string const &name, Liters cap) : Mechanic(name), capacity(cap) {
 }
 
-Tank::ptr Tank::create(std::string const& name, int64_t cap /*= 0*/) {
+Tank::ptr Tank::create(std::string const& name, Liters cap /*= 0*/) {
     return std::make_shared<Tank>(name, cap);
 }
 
@@ -16,31 +16,31 @@ void Tank::tick() {
 void Tank::dump(std::stringstream & stream) const {
     auto q = getQuantity();
     stream << name << " |";
-    auto pct = (float)q / (float)capacity;
+    auto pct = q / capacity;
     const auto width = 10;
     for (auto i = 0; i < width; ++i) {
-        if (i == (int64_t)(width * pct)) {
+        if (i == (int)(width * pct)) {
             stream << "^";
         }
         else {
             stream << " ";
         }
     }
-    stream << "|  " << q << "/" << capacity << " ";
+    stream << "|  " << q.to<double>() << "L / " << capacity.to<double>() << "L ";
     for (auto & fluid : volume.getVolume()) {
-        stream << "(" << fluid.first << ": " << fluid.second << ") ";
+        stream << "(" << fluid.first << ": " << fluid.second.to<double>() << "L) ";
     }
 }
 
-int64_t Tank::getQuantity() const {
+Liters Tank::getQuantity() const {
     return volume.getTotalVolume();
 }
 
-int64_t Tank::getCapacity() const {
+Liters Tank::getCapacity() const {
     return capacity;
 }
 
-void Tank::setCapacity(int64_t c) {
+void Tank::setCapacity(Liters c) {
     capacity = c;
 }
 
@@ -55,7 +55,7 @@ FluidVolume Tank::deposit(FluidVolume dep) {
 
     auto over = (getQuantity() + dep.getTotalVolume()) - capacity;
 
-    if (over >= 0) {
+    if (over >= Liters(0)) {
         volume.add(dep.subtract(dep.getTotalVolume() - over));
         return dep;
     }
@@ -65,6 +65,6 @@ FluidVolume Tank::deposit(FluidVolume dep) {
     }
 }
 
-FluidVolume Tank::withdraw(int64_t w) {
+FluidVolume Tank::withdraw(Liters w) {
     return volume.subtract(w);
 }

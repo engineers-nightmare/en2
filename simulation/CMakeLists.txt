@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10.2)
 
-project("en2" LANGUAGES C CXX)
+project("simulation" LANGUAGES C CXX)
 
 if (CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
     message(FATAL_ERROR "Please build out of tree")
@@ -14,19 +14,22 @@ if (${FORCE_COLORED_OUTPUT})
        add_compile_options (-fcolor-diagnostics)
     endif ()
 endif ()
-
-set (EN2_SOURCES
-    src/main.cpp
+    
+set (SIMULATION_SOURCES
+    mechanics/mechanic.h
+    mechanics/mechanics.h
+    mechanics/tank.h
+    mechanics/tank.cpp
+    mechanics/pump.h
+    mechanics/pump.cpp
+    mechanics/combinator.h
+    mechanics/combinator.cpp
+    mechanics/torch.h
+    mechanics/torch.cpp
+    fluid.h
+    fluid.cpp   
 )
 
-add_subdirectory(simulation)
-add_subdirectory(test)
-
-include(FindPkgConfig)
-PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
-
-add_executable(en2 src/main.cpp ${EN2_SOURCES})
-target_compile_features(en2 PRIVATE cxx_std_17)
-target_include_directories(en2 PRIVATE ${SDL2_INCLUDE_DIRS})
-target_link_libraries(en2 simulation ${SDL2_LIBRARIES})
-target_include_directories(en2 PRIVATE include simulation)
+add_library(simulation ${SIMULATION_SOURCES})
+target_compile_features(simulation PRIVATE cxx_std_17)
+target_include_directories(simulation PRIVATE ../include)

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10.2)
 
-project("en2" LANGUAGES C CXX)
+project("test" LANGUAGES C CXX)
 
 if (CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
     message(FATAL_ERROR "Please build out of tree")
@@ -15,18 +15,14 @@ if (${FORCE_COLORED_OUTPUT})
     endif ()
 endif ()
 
-set (EN2_SOURCES
-    src/main.cpp
+set (TEST_SOURCES
+    test.cpp
 )
-
-add_subdirectory(simulation)
-add_subdirectory(test)
 
 include(FindPkgConfig)
 PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
 
-add_executable(en2 src/main.cpp ${EN2_SOURCES})
-target_compile_features(en2 PRIVATE cxx_std_17)
-target_include_directories(en2 PRIVATE ${SDL2_INCLUDE_DIRS})
-target_link_libraries(en2 simulation ${SDL2_LIBRARIES})
-target_include_directories(en2 PRIVATE include simulation)
+add_executable(test_en2 ${TEST_SOURCES})
+target_compile_features(test_en2 PRIVATE cxx_std_17)
+target_link_libraries(test_en2 simulation)
+target_include_directories(test_en2 PRIVATE ../include ../simulation)

@@ -53,6 +53,8 @@ public:
     }
 
     void initMechanics() {
+        systems.mechanics.clear();
+
         auto t1 = Tank::create("tank1"); t1->setState(Mechanic::State::Disabled);
         auto t2 = Tank::create("tank2"); t2->setState(Mechanic::State::Disabled);
         auto t3 = Tank::create("tank3"); t3->setState(Mechanic::State::Disabled);
@@ -238,7 +240,7 @@ public:
                 mechsEnabled = false;
             }
             ImGui::End();
-         
+
             ImGui::Begin("Mechanics");
             imnodes::BeginNodeEditor();
             ImVec2 tankPos(50, 50);
@@ -252,6 +254,8 @@ public:
             int combWidth = 200;
             ImVec2 torchPos(combPos.x + combWidth + 50, 50);
             int torchYAdjust = 150;
+            int histWidth = 50;
+
             for (auto const& m : systems.mechanics) {
                 std::string name = std::string{m->getName()};
                 auto id = std::hash<std::string>{}(name);
@@ -265,7 +269,7 @@ public:
                     }
 
                     float arr[] = { (tank->getQuantity() / tank->getCapacity()) };
-                    ImGui::PushItemWidth(50);
+                    ImGui::PushItemWidth(histWidth);
                     ImGui::PlotHistogram("", arr, IM_ARRAYSIZE(arr), 0, NULL, 0.0f, 1.0f, ImVec2(0,80));
                     imnodes::BeginOutputAttribute(id);
                     imnodes::EndAttribute();
@@ -280,7 +284,7 @@ public:
                     }
 
                     float arr[] = { (pump->getHolding().getTotalVolume() / (pump->getFlow() / misc::MechanicsTickRate)).to<float>() };
-                    ImGui::PushItemWidth(50);
+                    ImGui::PushItemWidth(histWidth);
                     ImGui::PlotHistogram("", arr, IM_ARRAYSIZE(arr), 0, NULL, 0.0f, 1.0f, ImVec2(0,80));
 
                     imnodes::BeginInputAttribute(id + 1);

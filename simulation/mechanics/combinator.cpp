@@ -107,6 +107,10 @@ Tank::ptr const& Combinator::getTank(size_t index) const {
     return tanks[index];
 }
 
+std::vector<Tank::ptr> const& Combinator::getTanks() const {
+    return tanks;
+}
+
 void Combinator::setMix(size_t tank, uint amount) {
     assert(tank < tanks.size());
     amount = std::clamp(amount, 0u, 100u);

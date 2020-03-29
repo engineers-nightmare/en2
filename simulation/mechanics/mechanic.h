@@ -25,6 +25,10 @@ public:
 
     void setState(State state) { this->state = state; }
 
+    Mechanic::State getState() const { return state; }
+
+    std::string const& getName() const { return name; }
+
     virtual void tick() = 0;
 
     // return a string of things done since last tick

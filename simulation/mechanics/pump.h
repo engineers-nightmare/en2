@@ -26,6 +26,11 @@ protected:
     LitersPerSecond flow;
     FluidVolume holding;
 
+    enum class Cycle {
+        Take,
+        Put,
+    } cycle;
+
 public:
     Pump(std::string const& name);
     virtual void tick() override;
@@ -35,6 +40,14 @@ public:
     void setDest(Tank::ptr const& d);
 
     void setFlow(LitersPerSecond f);
+
+    Tank::ptr const& getSource() const;
+    Tank::ptr const& getDest() const;
+
+    FluidVolume const& getHolding() const;
+
+    LitersPerSecond const& getFlow() const;
+
     void take();
     void put();
 };

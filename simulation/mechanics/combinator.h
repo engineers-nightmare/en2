@@ -32,6 +32,9 @@ public:
     /** get tank (_not_ product) at index */
     Tank::ptr const& getTank(size_t index) const;
 
+    /** get tanks (_not_ product) */
+    std::vector<Tank::ptr> const& getTanks() const;
+
     /**
      * set mix rate for tank, mix 0-100
      * given : mix at 100 ml

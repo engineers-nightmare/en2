@@ -21,6 +21,7 @@ set (EN2_SOURCES
 
 add_subdirectory(simulation)
 add_subdirectory(test)
+add_subdirectory(imgui_en2)
 
 include(FindPkgConfig)
 PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
